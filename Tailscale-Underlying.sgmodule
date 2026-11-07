@@ -1,0 +1,13 @@
+#!name=Tailscale 底层自动切换
+#!desc=按当前网络自动切换 Tailscale 底层出口：纯蜂窝或有全局 IPv6 走直连，Wi-Fi 无 IPv6 一律退到蜂窝中继。带 SSID 名单、竞态防护、切换后回读验证和分层状态面板。远程引用：把 SCRIPT_PATH 填 https://raw.githubusercontent.com/lisongyan7050/sgmodule/main/tailscale-underlying.js（国内可用 cdn.jsdelivr.net/gh/lisongyan7050/sgmodule@main/tailscale-underlying.js）。
+#!system=ios
+#!arguments="SCRIPT_PATH:tailscale-underlying.js,GROUP:内网底层,DIRECT_SSID:CU_9CGP_5G,CELLULAR_SSID:-,DEBOUNCE_MS:3000,NOTIFY_NOOP:false"
+#!arguments-desc="SCRIPT_PATH: 脚本位置。本地使用填 tailscale-underlying.js（脚本与本模块同目录）；远程引用填 GitHub Raw 或 jsDelivr 链接（见模块说明）\nGROUP: 要切换的策略组名。该组必须已存在，且手动选项里同时含有 CELLULAR-ONLY 与 DIRECT\nDIRECT_SSID: 命中的 Wi-Fi 一律走直连，多个用 | 分隔；填 - 表示不启用\nCELLULAR_SSID: 命中的 Wi-Fi 一律走蜂窝，适合公司、校园等屏蔽 UDP 打洞的网络，多个用 | 分隔；填 - 表示不启用\nDEBOUNCE_MS: 防抖窗口，单位毫秒。切换策略本身会再触发一次 network-changed，靠它切断自我触发\nNOTIFY_NOOP: 策略没有变化时是否也发通知，填 true 或 false\n注：脚本默认 scriptTimeoutMs=8000，模块 timeout 必须 >= 8s；远程脚本每小时检查一次更新"
+
+[Script]
+Tailscale 底层切换 = type=event, event-name=network-changed, script-path={{{SCRIPT_PATH}}}, timeout=10, script-update-interval=3600, argument="group={{{GROUP}}}&directSSID={{{DIRECT_SSID}}}&cellularSSID={{{CELLULAR_SSID}}}&debounceMs={{{DEBOUNCE_MS}}}&notifyOnNoop={{{NOTIFY_NOOP}}}"
+Tailscale 底层启动 = type=event, event-name=engine-started, script-path={{{SCRIPT_PATH}}}, timeout=10, script-update-interval=3600, argument="group={{{GROUP}}}&directSSID={{{DIRECT_SSID}}}&cellularSSID={{{CELLULAR_SSID}}}&debounceMs={{{DEBOUNCE_MS}}}&notifyOnNoop={{{NOTIFY_NOOP}}}"
+Tailscale 底层面板 = type=generic, script-path={{{SCRIPT_PATH}}}, timeout=10, script-update-interval=3600, argument="mode=panel&group={{{GROUP}}}"
+
+[Panel]
+Tailscale 底层 = title="Tailscale 底层", content="读取中…", script-name=Tailscale 底层面板, update-interval=300
