@@ -1,13 +1,13 @@
 #!name=Tailscale 底层自动切换（远程脚本）
-#!desc=与 Tailscale-Underlying.sgmodule 相同，但脚本路径固定为 jsDelivr CDN，安装本模块即可脱离本地文件。若需要即时拿到刚提交的更新（CDN 对 @main 有缓存），可把 script-path 换成 https://raw.githubusercontent.com/lisongyan7050/sgmodule/main/tailscale-underlying.js 。
+#!desc=与 Tailscale-Underlying.sgmodule 相同，但脚本路径固定为 jsDelivr 的 v3.6 版本（内容固定、无 CDN 缓存延迟），安装本模块即可脱离本地文件。想自动跟随主分支把 @v3.6 改成 @main（CDN 缓存最长约 12h）；想用 GitHub Raw 则填 https://raw.githubusercontent.com/lisongyan7050/sgmodule/v3.6/tailscale-underlying.js 。
 #!system=ios
 #!arguments="GROUP:内网底层,DIRECT_SSID:CU_9CGP_5G,CELLULAR_SSID:-,DEBOUNCE_MS:3000,NOTIFY_NOOP:false"
 #!arguments-desc="GROUP: 要切换的策略组名。该组必须已存在，且手动选项里同时含有 CELLULAR-ONLY 与 DIRECT\nDIRECT_SSID: 命中的 Wi-Fi 一律走直连，多个用 | 分隔；填 - 表示不启用\nCELLULAR_SSID: 命中的 Wi-Fi 一律走蜂窝，适合公司、校园等屏蔽 UDP 打洞的网络，多个用 | 分隔；填 - 表示不启用\nDEBOUNCE_MS: 防抖窗口，单位毫秒\nNOTIFY_NOOP: 策略没有变化时是否也发通知，填 true 或 false"
 
 [Script]
-Tailscale 底层切换 = type=event, event-name=network-changed, script-path=https://cdn.jsdelivr.net/gh/lisongyan7050/sgmodule@main/tailscale-underlying.js, timeout=10, script-update-interval=3600, argument="group={{{GROUP}}}&directSSID={{{DIRECT_SSID}}}&cellularSSID={{{CELLULAR_SSID}}}&debounceMs={{{DEBOUNCE_MS}}}&notifyOnNoop={{{NOTIFY_NOOP}}}"
-Tailscale 底层启动 = type=event, event-name=engine-started, script-path=https://cdn.jsdelivr.net/gh/lisongyan7050/sgmodule@main/tailscale-underlying.js, timeout=10, script-update-interval=3600, argument="group={{{GROUP}}}&directSSID={{{DIRECT_SSID}}}&cellularSSID={{{CELLULAR_SSID}}}&debounceMs={{{DEBOUNCE_MS}}}&notifyOnNoop={{{NOTIFY_NOOP}}}"
-Tailscale 底层面板 = type=generic, script-path=https://cdn.jsdelivr.net/gh/lisongyan7050/sgmodule@main/tailscale-underlying.js, timeout=10, script-update-interval=3600, argument="mode=panel&group={{{GROUP}}}"
+Tailscale 底层切换 = type=event, event-name=network-changed, script-path=https://cdn.jsdelivr.net/gh/lisongyan7050/sgmodule@v3.6/tailscale-underlying.js, timeout=10, script-update-interval=3600, argument="group={{{GROUP}}}&directSSID={{{DIRECT_SSID}}}&cellularSSID={{{CELLULAR_SSID}}}&debounceMs={{{DEBOUNCE_MS}}}&notifyOnNoop={{{NOTIFY_NOOP}}}"
+Tailscale 底层启动 = type=event, event-name=engine-started, script-path=https://cdn.jsdelivr.net/gh/lisongyan7050/sgmodule@v3.6/tailscale-underlying.js, timeout=10, script-update-interval=3600, argument="group={{{GROUP}}}&directSSID={{{DIRECT_SSID}}}&cellularSSID={{{CELLULAR_SSID}}}&debounceMs={{{DEBOUNCE_MS}}}&notifyOnNoop={{{NOTIFY_NOOP}}}"
+Tailscale 底层面板 = type=generic, script-path=https://cdn.jsdelivr.net/gh/lisongyan7050/sgmodule@v3.6/tailscale-underlying.js, timeout=10, script-update-interval=3600, argument="mode=panel&group={{{GROUP}}}"
 
 [Panel]
 Tailscale 底层 = title="Tailscale 底层", content="读取中…", script-name=Tailscale 底层面板, update-interval=300
