@@ -34,9 +34,9 @@
 //   或直接写 [Script]：
 //   Tailscale底层切换 = type=event, event-name=network-changed, script-path=tailscale-underlying.js
 //   Tailscale底层启动 = type=event, event-name=engine-started, script-path=tailscale-underlying.js
-//   远程引用（本文件发布地址）：
-//   https://raw.githubusercontent.com/lisongyan7050/sgmodule/main/tailscale-underlying.js
+//   远程引用（国内推荐 jsDelivr；GitHub Raw 无 CDN 缓存、更新即时但国内可能不通）：
 //   https://cdn.jsdelivr.net/gh/lisongyan7050/sgmodule@main/tailscale-underlying.js
+//   https://raw.githubusercontent.com/lisongyan7050/sgmodule/main/tailscale-underlying.js
 //
 // argument：JSON（{"directSSID":["家WiFi"]}，配置文件里整段加双引号）或 KV
 //   （directSSID=家|另&cellularSSID=公司，& 分对、| 分多值、- 表示不启用）。
